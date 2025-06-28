@@ -15,6 +15,7 @@ const zoneRoutes = require("./routes/zoneRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const subcategoryRoutes = require("./routes/subcategoryRoutes");
 const impactRoutes = require("./routes/impactRoutes");
+const pleasantnessRoutes = require("./routes/pleasantnessRoutes");
 const path = require("path");
 
 const app = express();
@@ -49,6 +50,7 @@ app.use("/api/zones", zoneRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/subcategories", subcategoryRoutes);
 app.use("/api/impacts", impactRoutes);
+app.use("/api/pleasantnesses", pleasantnessRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

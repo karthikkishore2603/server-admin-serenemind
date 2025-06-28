@@ -9,6 +9,7 @@ const schoolRoutes = require("./routes/schoolRoutes");
 const boardRoutes = require("./routes/boardRoutes");
 const classRoutes = require("./routes/classRoutes");
 const divisionRoutes = require("./routes/divisionRoutes");
+const academicyearRoutes = require("./routes/academicyearRoutes");
 const path = require("path");
 
 const app = express();
@@ -37,6 +38,7 @@ app.use("/api/schools", schoolRoutes);
 app.use("/api/boards", boardRoutes);
 app.use("/api/classes", classRoutes);
 app.use("/api/divisions", divisionRoutes);
+app.use("/api/academicyears", academicyearRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

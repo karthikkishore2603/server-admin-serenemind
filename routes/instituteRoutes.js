@@ -29,7 +29,7 @@ const upload = multer({
   fileFilter,
 });
 
-router.post("/", upload.single("image"), instituteController.createInstitute);
+router.post("/institutes", upload.single("image"), instituteController.createInstitute);
 router.get("/", instituteController.getInstitutes);
 router.get("/:id", instituteController.getInstituteById);
 router.put("/:id", upload.single("image"), instituteController.updateInstitute);

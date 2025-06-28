@@ -13,6 +13,7 @@ const academicyearRoutes = require("./routes/academicyearRoutes");
 const emotionRoutes = require("./routes/emotionRoutes");
 const zoneRoutes = require("./routes/zoneRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const subcategoryRoutes = require("./routes/subcategoryRoutes");
 const path = require("path");
 
 const app = express();
@@ -45,6 +46,7 @@ app.use("/api/academicyears", academicyearRoutes);
 app.use("/api/emotions", emotionRoutes);
 app.use("/api/zones", zoneRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/subcategories", subcategoryRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

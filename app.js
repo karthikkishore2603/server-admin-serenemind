@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const authRoutes = require("./routes/authRoutes");
 const cityRoutes = require("./routes/cityRoutes");
 const countryRouter = require("./routes/countryRoutes");
 const stateRouter = require("./routes/stateRoutes");
@@ -25,7 +26,7 @@ app.use(
   cors({
     origin: "http://localhost:3000",
     methods: ["GET", "POST", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(express.json());
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // API routes
+app.use("/api/auth", authRoutes);
 app.use("/api/cities", cityRoutes);
 app.use("/api/countries", countryRouter);
 app.use("/api/states", stateRouter);

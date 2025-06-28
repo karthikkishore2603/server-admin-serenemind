@@ -7,6 +7,7 @@ const instituteRoutes = require("./routes/instituteRoutes");
 const branchRoutes = require("./routes/branchRoutes");
 const schoolRoutes = require("./routes/schoolRoutes");
 const boardRoutes = require("./routes/boardRoutes");
+const classRoutes = require("./routes/classRoutes");
 const path = require("path");
 
 const app = express();
@@ -33,6 +34,7 @@ app.use("/api/institutes", instituteRoutes);
 app.use("/api/branches", branchRoutes);
 app.use("/api/schools", schoolRoutes);
 app.use("/api/boards", boardRoutes);
+app.use("/api/classes", classRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -11,6 +11,7 @@ const classRoutes = require("./routes/classRoutes");
 const divisionRoutes = require("./routes/divisionRoutes");
 const academicyearRoutes = require("./routes/academicyearRoutes");
 const emotionRoutes = require("./routes/emotionRoutes");
+const zoneRoutes = require("./routes/zoneRoutes");
 const path = require("path");
 
 const app = express();
@@ -41,6 +42,7 @@ app.use("/api/classes", classRoutes);
 app.use("/api/divisions", divisionRoutes);
 app.use("/api/academicyears", academicyearRoutes);
 app.use("/api/emotions", emotionRoutes);
+app.use("/api/zones", zoneRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -1,18 +1,9 @@
 const { Institute } = require("../models");
-const path = require("path");
-const fs = require("fs");
 
 // CREATE
 exports.createInstitute = async (req, res) => {
   try {
-    let imagePath = null;
-    if (req.file) {
-      imagePath = req.file.filename;
-    }
-    const institute = await Institute.create({
-      ...req.body,
-      image: imagePath,
-    });
+    const institute = await Institute.create(req.body);
     res.status(201).json(institute);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -22,7 +13,9 @@ exports.createInstitute = async (req, res) => {
 // READ ALL
 exports.getInstitutes = async (req, res) => {
   try {
-    const institutes = await Institute.findAll();
+    const institutes = await Institute.findAll({
+      order: [["createdAt", "DESC"]],
+    });
     res.json(institutes);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -33,7 +26,8 @@ exports.getInstitutes = async (req, res) => {
 exports.getInstituteById = async (req, res) => {
   try {
     const institute = await Institute.findByPk(req.params.id);
-    if (!institute) return res.status(404).json({ error: "Not found" });
+    if (!institute)
+      return res.status(404).json({ error: "Institute not found" });
     res.json(institute);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -44,13 +38,9 @@ exports.getInstituteById = async (req, res) => {
 exports.updateInstitute = async (req, res) => {
   try {
     const institute = await Institute.findByPk(req.params.id);
-    if (!institute) return res.status(404).json({ error: "Not found" });
-    let imagePath = institute.image;
-    if (req.file) {
-      imagePath = req.file.filename;
-      // Optionally delete old image file
-    }
-    await institute.update({ ...req.body, image: imagePath });
+    if (!institute)
+      return res.status(404).json({ error: "Institute not found" });
+    await institute.update(req.body);
     res.json(institute);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -61,9 +51,24 @@ exports.updateInstitute = async (req, res) => {
 exports.deleteInstitute = async (req, res) => {
   try {
     const institute = await Institute.findByPk(req.params.id);
-    if (!institute) return res.status(404).json({ error: "Not found" });
+    if (!institute)
+      return res.status(404).json({ error: "Institute not found" });
     await institute.destroy();
-    res.json({ message: "Deleted" });
+    res.json({ message: "Institute deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// TOGGLE STATUS
+exports.toggleStatus = async (req, res) => {
+  try {
+    const institute = await Institute.findByPk(req.params.id);
+    if (!institute)
+      return res.status(404).json({ error: "Institute not found" });
+    institute.status = !institute.status;
+    await institute.save();
+    res.json(institute);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

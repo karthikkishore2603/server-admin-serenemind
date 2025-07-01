@@ -4,7 +4,6 @@ const authRoutes = require("./routes/authRoutes");
 const cityRoutes = require("./routes/cityRoutes");
 const countryRouter = require("./routes/countryRoutes");
 const stateRouter = require("./routes/stateRoutes");
-const instituteRoutes = require("./routes/instituteRoutes");
 const branchRoutes = require("./routes/branchRoutes");
 const schoolRoutes = require("./routes/schoolRoutes");
 const boardRoutes = require("./routes/boardRoutes");
@@ -17,6 +16,7 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const subcategoryRoutes = require("./routes/subcategoryRoutes");
 const impactRoutes = require("./routes/impactRoutes");
 const pleasantnessRoutes = require("./routes/pleasantnessRoutes");
+const instituteRoutes = require("./routes/instituteRoutes");
 const path = require("path");
 
 const app = express();
@@ -40,7 +40,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/cities", cityRoutes);
 app.use("/api/countries", countryRouter);
 app.use("/api/states", stateRouter);
-app.use("/api/institutes", instituteRoutes);
 app.use("/api/branches", branchRoutes);
 app.use("/api/schools", schoolRoutes);
 app.use("/api/boards", boardRoutes);
@@ -53,6 +52,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/subcategories", subcategoryRoutes);
 app.use("/api/impacts", impactRoutes);
 app.use("/api/pleasantnesses", pleasantnessRoutes);
+app.use("/api/institutes", instituteRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

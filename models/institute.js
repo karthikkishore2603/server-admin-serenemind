@@ -8,17 +8,52 @@ module.exports = (sequelize, DataTypes) => {
   }
   Institute.init(
     {
-      name: DataTypes.STRING,
-      addressLine1: DataTypes.STRING,
-      addressLine2: DataTypes.STRING,
-      city: DataTypes.STRING,
-      state: DataTypes.STRING,
-      pinCode: DataTypes.STRING,
-      phoneNumber: DataTypes.STRING,
-      telephoneNumber: DataTypes.STRING,
-      email: DataTypes.STRING,
-      website: DataTypes.STRING,
-      image: DataTypes.STRING,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      addressLine1: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      addressLine2: {
+        type: DataTypes.STRING,
+      },
+      city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      state: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      pinCode: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      telephoneNumber: {
+        type: DataTypes.STRING,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      website: {
+        type: DataTypes.STRING,
+      },
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
     },
     {
       sequelize,

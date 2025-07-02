@@ -1,42 +1,52 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('States', {
+    await queryInterface.createTable("Cities", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      name: {
+      city: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       status: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
+        defaultValue: true,
+      },
+      stateId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "States",
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
       countryId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Countries',
-          key: 'id'
-        }
+          model: "Countries",
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('States');
-  }
+    await queryInterface.dropTable("Cities");
+  },
 };

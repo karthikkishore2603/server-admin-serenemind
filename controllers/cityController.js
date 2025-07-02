@@ -1,50 +1,74 @@
-const db = require('../models');
-const { Op } = require('sequelize');
+const { City, State, Country } = require("../models");
 
-exports.getAllCities = async (req, res) => {
-  try {
-    const { search } = req.query;
-    let whereCondition = {};
-    
-    if (search) {
-      whereCondition = {
-        city: {
-          [Op.iLike]: `%${search}%`,
-        },
-      };
-    }
-
-    const cities = await db.City.findAll({ where: whereCondition });
-    res.json(cities);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
+// CREATE
 exports.createCity = async (req, res) => {
   try {
-    const { country, state, city } = req.body;
-    const newCity = await db.City.create({ country, state, city });
-    res.status(201).json(newCity);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const city = await City.create(req.body);
+    res.status(201).json(city);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };
 
-exports.toggleCityStatus = async (req, res) => {
+// READ ALL
+exports.getCities = async (req, res) => {
   try {
-    const { id } = req.params;
-    const city = await db.City.findByPk(id);
-    
-    if (!city) {
-      return res.status(404).json({ error: 'City not found' });
-    }
+    const cities = await City.findAll({
+      include: [{ model: State }, { model: Country }],
+      order: [["createdAt", "DESC"]],
+    });
+    res.json(cities);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
+// READ ONE
+exports.getCityById = async (req, res) => {
+  try {
+    const city = await City.findByPk(req.params.id, {
+      include: [{ model: State }, { model: Country }],
+    });
+    if (!city) return res.status(404).json({ error: "City not found" });
+    res.json(city);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// UPDATE
+exports.updateCity = async (req, res) => {
+  try {
+    const city = await City.findByPk(req.params.id);
+    if (!city) return res.status(404).json({ error: "City not found" });
+    await city.update(req.body);
+    res.json(city);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// DELETE
+exports.deleteCity = async (req, res) => {
+  try {
+    const city = await City.findByPk(req.params.id);
+    if (!city) return res.status(404).json({ error: "City not found" });
+    await city.destroy();
+    res.json({ message: "City deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// TOGGLE STATUS
+exports.toggleStatus = async (req, res) => {
+  try {
+    const city = await City.findByPk(req.params.id);
+    if (!city) return res.status(404).json({ error: "City not found" });
     city.status = !city.status;
     await city.save();
-    
     res.json(city);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

@@ -1,17 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const countryController = require('../controllers/countryController');
+const countryController = require("../controllers/countryController");
 
-// Create a new Country
-router.post('/', countryController.create);
-
-// Retrieve all Countries
-router.get('/', countryController.findAll);
-
-// Update a Country with id
-router.put('/:id', countryController.update);
-
-// Update Country status
-router.patch('/:id/status', countryController.updateStatus);
+router.post("/", countryController.createCountry);
+router.get("/", countryController.getCountries);
+router.get("/:id", countryController.getCountryById);
+router.put("/:id", countryController.updateCountry);
+router.delete("/:id", countryController.deleteCountry);
+router.patch("/:id/toggle-status", countryController.toggleStatus);
 
 module.exports = router;

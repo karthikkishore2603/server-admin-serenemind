@@ -1,38 +1,45 @@
-'use strict';
+const { Model } = require("sequelize");
 
-const { Model, DataTypes } = require('sequelize');
-
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   class City extends Model {
     static associate(models) {
-      // Define associations here if needed
+      City.belongsTo(models.State, { foreignKey: "stateId" });
+      City.belongsTo(models.Country, { foreignKey: "countryId" });
     }
   }
-
-  City.init({
-    country: {
-      type: DataTypes.STRING,
-      allowNull: false
+  City.init(
+    {
+      city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
+      stateId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "States",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
+      countryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Countries",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
     },
-    state: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    city: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    status: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    {
+      sequelize,
+      modelName: "City",
     }
-  }, {
-    sequelize,
-    modelName: 'City',
-    tableName: 'Cities',
-    freezeTableName: true,
-    timestamps: true
-  });
-
+  );
   return City;
 };

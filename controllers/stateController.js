@@ -1,61 +1,74 @@
-const db = require('../models');
-const { Op } = require('sequelize');
+const { State, Country } = require("../models");
 
-exports.getAllStates = async (req, res) => {
-  try {
-    const { search } = req.query;
-    let whereCondition = {};
-    
-    if (search) {
-      whereCondition = {
-        name: {
-          [Op.iLike]: `%${search}%`
-        }
-      };
-    }
-
-    const states = await db.State.findAll({ 
-      where: whereCondition,
-      include: [{
-        model: db.Country,
-        attributes: ['countryName']
-      }]
-    });
-    res.json(states);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
+// CREATE
 exports.createState = async (req, res) => {
   try {
-    const { name, countryId } = req.body;
-    
-    if (!name || !countryId) {
-      return res.status(400).json({ error: 'Name and countryId are required' });
-    }
-
-    const newState = await db.State.create({ name, countryId });
-    res.status(201).json(newState);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const state = await State.create(req.body);
+    res.status(201).json(state);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };
 
-exports.toggleStateStatus = async (req, res) => {
+// READ ALL
+exports.getStates = async (req, res) => {
   try {
-    const { id } = req.params;
-    const state = await db.State.findByPk(id);
-    
-    if (!state) {
-      return res.status(404).json({ error: 'State not found' });
-    }
+    const states = await State.findAll({
+      include: [{ model: Country }],
+      order: [["createdAt", "DESC"]],
+    });
+    res.json(states);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
+// READ ONE
+exports.getStateById = async (req, res) => {
+  try {
+    const state = await State.findByPk(req.params.id, {
+      include: [{ model: Country }],
+    });
+    if (!state) return res.status(404).json({ error: "State not found" });
+    res.json(state);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// UPDATE
+exports.updateState = async (req, res) => {
+  try {
+    const state = await State.findByPk(req.params.id);
+    if (!state) return res.status(404).json({ error: "State not found" });
+    await state.update(req.body);
+    res.json(state);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// DELETE
+exports.deleteState = async (req, res) => {
+  try {
+    const state = await State.findByPk(req.params.id);
+    if (!state) return res.status(404).json({ error: "State not found" });
+    await state.destroy();
+    res.json({ message: "State deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// TOGGLE STATUS
+exports.toggleStatus = async (req, res) => {
+  try {
+    const state = await State.findByPk(req.params.id);
+    if (!state) return res.status(404).json({ error: "State not found" });
     state.status = !state.status;
     await state.save();
-    
     res.json(state);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

@@ -16,7 +16,6 @@ const pleasantnessRoutes = require("./routes/pleasantnessRoutes");
 const instituteRoutes = require("./routes/instituteRoutes");
 const countryRoutes = require("./routes/countryRoutes");
 const stateRoutes = require("./routes/stateRoutes");
-const cityRoutes = require("./routes/cityRoutes");
 const path = require("path");
 
 const app = express();
@@ -52,7 +51,6 @@ app.use("/api/pleasantnesses", pleasantnessRoutes);
 app.use("/api/institutes", instituteRoutes);
 app.use("/api/countries", countryRoutes);
 app.use("/api/states", stateRoutes);
-app.use("/api/cities", cityRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
